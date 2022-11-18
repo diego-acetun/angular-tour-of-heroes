@@ -1,8 +1,17 @@
-<div *ngIf="messageService.messages.length">
-
-  <h2>Messages</h2>
-  <button type="button" class="clear"
-          (click)="messageService.clear()">Clear messages</button>
-  <div *ngFor='let message of messageService.messages'> {{message}} </div>
-
+<div *ngIf="messageService.messages.length" class="mb-10 mt-5">
+  <h2 class="text-xl font-bold">Messages</h2>
+  <button
+    type="button"
+    class="rounded-full bg-blue-700 text-white p-2 mb-4 mt-2 hover:bg-blue-800"
+    (click)="messageService.clear()"
+  >
+    Clear messages
+  </button>
+  <div
+    *ngFor="let message of messageService.messages"
+    class="p-4 text-sm bg-gray-100 rounded-lg text-white m-2"
+    [ngClass]="message.includes('deleted hero') ? 'bg-red-600'  : message.includes('updated hero') ? 'bg-green-600' : message.includes('no heroes') ? 'bg-yellow-600' : 'bg-blue-600'"
+  >
+    <span class="font-medium">{{ message }}</span>
+  </div>
 </div>
