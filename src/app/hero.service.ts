@@ -28,7 +28,10 @@ export class HeroService {
   //   );
   // }
 
-  
+  /** Log a HeroService message with the MessageService */
+  private log(message: string) {  
+    this.messageService.add(`HeroService: ${message}`);
+  }
   getHeroes(): Observable<Hero[]> {
     return this.http.get<Hero[]>(this.heroesUrl).pipe(
       tap((_) => this.log('fetched heroes')),
@@ -64,12 +67,14 @@ export class HeroService {
       // if not search term, return empty hero array.
       return of([]);
     }
+
     return this.http.get<Hero[]>(`${this.heroesUrl}/?name=${term}`).pipe(
-      tap((x) =>
+      tap((x) => {
+        console.log('x', x);
         x.length
           ? this.log(`found heroes matching "${term}"`)
-          : this.log(`no heroes matching "${term}"`)
-      ),
+          : this.log(`no heroes matching "${term}"`);
+      }),
       catchError(this.handleError<Hero[]>('searchHeroes', []))
     );
   }
@@ -120,10 +125,5 @@ export class HeroService {
       // Let the app keep running by returning an empty result.
       return of(result as T);
     };
-  }
-
-  /** Log a HeroService message with the MessageService */
-  private log(message: string) {
-    this.messageService.add(`HeroService: ${message}`);
   }
 }
